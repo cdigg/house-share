@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseShare.Web", "HouseShare\HouseShare.Web.csproj", "{3429B61F-BF63-4479-B8EF-895B7280BD37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseShare.Tests", "HouseShare.Tests\HouseShare.Tests.csproj", "{EB2869BC-6722-4CA3-956D-79769C3FC81E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseShare.Domain", "HouseShare.Domain\HouseShare.Domain.csproj", "{1727CFA1-1841-467C-858A-4F32F0FBB0E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3429B61F-BF63-4479-B8EF-895B7280BD37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3429B61F-BF63-4479-B8EF-895B7280BD37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3429B61F-BF63-4479-B8EF-895B7280BD37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3429B61F-BF63-4479-B8EF-895B7280BD37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB2869BC-6722-4CA3-956D-79769C3FC81E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB2869BC-6722-4CA3-956D-79769C3FC81E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB2869BC-6722-4CA3-956D-79769C3FC81E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB2869BC-6722-4CA3-956D-79769C3FC81E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1727CFA1-1841-467C-858A-4F32F0FBB0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1727CFA1-1841-467C-858A-4F32F0FBB0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1727CFA1-1841-467C-858A-4F32F0FBB0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1727CFA1-1841-467C-858A-4F32F0FBB0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="233f9ae6f9ce4300958d8b70c69d19ec" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="MainModel.House" Width="1.5" PointX="0.75" PointY="8.875" />
+        <EntityTypeShape EntityType="MainModel.MoneyTransaction" Width="1.5" PointX="7.5" PointY="12.25" />
+        <EntityTypeShape EntityType="MainModel.Owe" Width="1.5" PointX="5.25" PointY="11.75" />
+        <EntityTypeShape EntityType="MainModel.Payment" Width="1.5" PointX="5.25" PointY="15.75" />
+        <EntityTypeShape EntityType="MainModel.Purchase" Width="1.5" PointX="8.25" PointY="16.625" />
+        <EntityTypeShape EntityType="MainModel.ShareEntity" Width="1.5" PointX="2.125" PointY="12.875" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__House__276EDEB3" />
+        <AssociationConnector Association="MainModel.FK__Owe__HouseId__267ABA7A" />
+        <AssociationConnector Association="MainModel.FK__Payment__HouseId__25869641" />
+        <AssociationConnector Association="MainModel.FK__Purchase__HouseI__24927208" />
+        <AssociationConnector Association="MainModel.FK__ShareEnti__House__239E4DCF" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__OweId__1FCDBCEB" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__Payme__20C1E124" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__Purch__1ED998B2" />
+        <AssociationConnector Association="MainModel.FK__Owe__FromShareEn__1B0907CE" />
+        <AssociationConnector Association="MainModel.FK__Owe__ToShareEnti__1BFD2C07" />
+        <AssociationConnector Association="MainModel.FK__Payment__FromSha__173876EA" />
+        <AssociationConnector Association="MainModel.FK__Payment__ToShare__182C9B23" />
+        <AssociationConnector Association="MainModel.FK__Purchase__ShareE__145C0A3F" />
+        <EntityTypeShape EntityType="MainModel.UserProfile" Width="1.5" PointX="3" PointY="9.375" />
+        <AssociationConnector Association="MainModel.FK__UserProfi__House__1DB06A4F" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__FromS__1EA48E88" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__ToSha__1F98B2C1" />
+        <EntityTypeShape EntityType="MainModel.ShareEntityDate" Width="1.5" PointX="4.375" PointY="19.75" />
+        <AssociationConnector Association="MainModel.FK__ShareEnti__Share__2DE6D218" />
+        <AssociationConnector Association="MainModel.FK__MoneyTran__Payme__2EDAF651" />
+        <EntityTypeShape EntityType="MainModel.PurchaseShare" Width="1.5" PointX="10.5" PointY="15.5" />
+        <AssociationConnector Association="MainModel.FK__PurchaseS__Purch__3E1D39E1" />
+        <AssociationConnector Association="MainModel.FK__PurchaseS__Share__3F115E1A" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

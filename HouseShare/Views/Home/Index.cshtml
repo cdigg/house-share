@@ -1,0 +1,298 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div ng-controller="homeController">
+    <div class="col-xs-6">
+        <div class="btn btn-default" ng-click="setTab(1)" ng-class="{'btn-primary':tab==1}">Purchase</div>
+        <div class="btn btn-default" ng-click="setTab(2)" ng-class="{'btn-primary':tab==2}">Owe</div>
+        <div class="btn btn-default" ng-click="setTab(3)" ng-class="{'btn-primary':tab==3}">Pay</div>
+        <div class="btn btn-default" ng-click="setTab(4)" ng-class="{'btn-primary':tab==4}">People</div>
+        <label>
+            <input type="checkbox" ng-model="config.showAllPeople"> Show All People
+        </label>
+        
+        <!--Purchase-->
+        <div ng-show="tab==1">
+            <form class="form-horizontal" style="margin-top:10px;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Paid By</label>
+                    <div class="col-sm-10">
+                        <select ng-options="e.id as e.name for e in entities | filter:inDateRange(tx.paidDate)" ng-model="tx.entityFrom" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">On</label>
+                    <div class="col-sm-10">
+                        <span class="col-sm-4 no-padding-left">
+                            <input type="text" ng-change="loadShares()" class="form-control" ng-click="openDatePicker($event,'p')" datepicker-popup="MM/dd/yyyy" ng-model="tx.paidDate" is-open="datePickers.paidDateOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Category</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="catOptions" id="inlineRadio1" value="food" ng-model="tx.category">Food
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="catOptions" id="inlineRadio2" value="utility" ng-model="tx.category">Utility
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="catOptions" id="inlineRadio3" value="misc" ng-model="tx.category">Misc
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.desc" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Amount</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.amount" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Type</label>
+                    <div class="col-sm-10">
+                        <label class="radio-inline">
+                            <input type="radio" name="pTypeOptions" id="inlineRadio2" value="single" ng-model="tx.pType">Single
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="pTypeOptions" id="inlineRadio3" value="split" ng-model="tx.pType">Split
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="tx.pType=='split'">
+                    <label class="col-sm-2 control-label">From</label>
+                    <div class="col-sm-10">
+                        <span class="col-sm-4 no-padding-left">
+                            <input type="text" class="form-control" ng-click="openDatePicker($event,'sf')" datepicker-popup="MM/dd/yyyy" ng-model="tx.splitFrom" is-open="datePickers.splitFromOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group" ng-hide="tx.pType=='split'">
+                    <label class="col-sm-2 control-label">Shares</label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-4" ng-repeat="share in shares">
+                            {{share.name}}
+                            <input class="form-control" ng-model="share.shares"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="tx.pType=='split'">
+                    <label class="col-sm-2 control-label">To</label>
+                    <div class="col-sm-10">
+                        <span class="col-sm-4 no-padding-left">
+                            <input type="text" class="form-control" ng-click="openDatePicker($event,'st')" datepicker-popup="MM/dd/yyyy" ng-model="tx.splitTo" is-open="datePickers.splitToOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <div class="col-xs-12 text-right">
+                <div class="btn-group">
+                    <div class="btn btn-success" ng-click="saveTx('purchase')">Save</div>
+                    <div class="btn btn-warning" ng-click="refreshTx()">Clear</div>
+                </div>
+            </div>
+        </div>
+        <!--Owe-->
+        <div ng-show="tab==2">
+            <form class="form-horizontal" style="margin-top:10px;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <select ng-options="e.id as e.name for e in entities | filter:inDateRange(tx.paidDate)" ng-model="tx.entityFrom" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">owes</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <select ng-options="e.id as e.name for e in entities | filter:inDateRange(tx.paidDate)" ng-model="tx.entityTo" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">On</label>
+                    <div class="col-sm-10">
+                        <span class="col-sm-4 no-padding-left">
+                            <input type="text" class="form-control" ng-click="openDatePicker($event,'p')" datepicker-popup="MM/dd/yyyy" ng-model="tx.paidDate" is-open="datePickers.paidDateOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.desc" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Amount</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.amount" /></div>
+                </div>
+            </form>
+            <div class="col-xs-12 text-right">
+                <div class="btn-group">
+                    <div class="btn btn-success" ng-click="saveTx('owe')">Save</div>
+                    <div class="btn btn-warning" ng-click="refreshTx()">Clear</div>
+                </div>
+            </div>
+        </div>
+        <!--Pay-->
+        <div ng-show="tab==3">
+            <form class="form-horizontal" style="margin-top:10px;">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <select ng-options="e.id as e.name for e in entities | filter:inDateRange(tx.paidDate)" ng-model="tx.entityFrom" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">paid</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <select ng-options="e.id as e.name for e in entities | filter:inDateRange(tx.paidDate)" ng-model="tx.entityTo" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">On</label>
+                    <div class="col-sm-10">
+                        <span class="col-sm-4 no-padding-left">
+                            <input type="text" class="form-control" ng-click="openDatePicker($event,'p')" datepicker-popup="MM/dd/yyyy" ng-model="tx.paidDate" is-open="datePickers.paidDateOpened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Description</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.desc" /></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Amount</label>
+                    <div class="col-sm-10"><input type="text" class="form-control" ng-model="tx.amount" /></div>
+                </div>
+            </form>
+            <div class="col-xs-12 text-right">
+                <div class="btn-group">
+                    <div class="btn btn-success" ng-click="saveTx('paid')">Save</div>
+                    <div class="btn btn-warning" ng-click="refreshTx()">Clear</div>
+                </div>
+            </div>
+        </div>
+        <!--People-->
+        <div ng-show="tab==4">
+            <div class="col-sm-12" ng-repeat="entity in entities">
+                <div class="col-sm-4" style="vertical-align:top;"><span class="btn btn-link" ng-click="addEditEntity(entity)">{{entity.name}}</span></div>
+                <div class="col-sm-8">
+                    <div class="col-sm-12" ng-repeat="dte in entity.dates">
+                        <div class="small col-xs-8">
+                            {{dte.fromStr}} - {{dte.toStr}}
+                        </div>
+                        <div class="small col-xs-4">
+                            ({{dte.shares}})
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn btn-default" ng-click="addEditEntity(null)">
+                Add
+            </div>
+        </div>
+    </div>
+<div class="col-xs-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Balances
+                <div class="label" ng-class="{'label-success':!loadingBalances, 'label-warning':loadingBalances}">
+                    <span ng-show="loadingBalances">Loading...</span>
+                    <span ng-show="!loadingBalances">Loaded</span>
+                </div>
+                <div class="pull-right btn btn-danger btn-sm" ng-show="false" ng-click="recalc()">Recalculate All</div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="col-xs-4"><span class="btn btn-link" ng-click="sortBalance('f')">From</span></div>
+            <div class="col-xs-4"><span class="btn btn-link" ng-click="sortBalance('t')">To</span></div>
+            <div class="col-xs-4"></div>
+            <div class="col-xs-12" ng-repeat="balance in balances | filter:greaterThan('amount', 0.01) | orderBy:sortBal">
+                <div class="col-xs-4 no-padding">{{balance.from}} </div>
+                <div class="col-xs-4 no-padding">{{balance.to}} </div>
+                <div class="col-xs-2 no-padding text-right">{{balance.amount | currency}}</div>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Months -->
+    <div class="col-xs-12" style="margin-top:30px; margin-bottom:100px;">
+        <tabset>
+            <tab ng-click="loadMonth(month,false)" ng-repeat="month in months | orderBy: ['-year','-number']" heading="{{month.name}}">
+                <div ng-if="!month.loaded">
+                    Loading...
+                </div>
+                <div ng-if="month.loaded" class="col-xs-4">
+                    Food: {{month.food | currency}}
+                </div>
+                <div ng-if="month.loaded" class="col-xs-4">
+                    Utilities: {{month.utilities | currency}}
+                </div>
+                <div ng-if="month.loaded" class="col-xs-4">
+                    Misc: {{month.misc | currency}}
+                </div>
+                <div ng-if="month.loaded" class="col-xs-12" style="margin-top: 15px;">
+                    <table class="table">
+                        <tr ng-repeat="tx in month.transactions | orderBy:'date'">
+                            <td>{{tx.date}}</td>
+                            <td>{{tx.type}}</td>
+                            <td>{{tx.text}}</td>
+                            <td class="text-right">{{tx.amount | currency}}</td>
+                            <td>{{tx.note}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+    
+    
+</div>
+
+
+
+@section Scripts{
+    <script src="~/Scripts/Services/HomeService.js"></script>
+    <script src="~/Scripts/Controllers/HomeController.js"></script>
+}
+
+
+
+<script type="text/ng-template" id="entity.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Person / People</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-10"><input type="text" class="form-control" ng-model="entity.name" /></div>
+            </div>
+            <span ng-repeat="dte in entity.dates">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">From</label>
+                    <div class="col-sm-3"><input type="text" class="form-control" ng-model="dte.fromStr" /></div>
+                    <label class="col-sm-1 control-label">To</label>
+                    <div class="col-sm-3"><input type="text" class="form-control" ng-model="dte.toStr" /></div>
+                    <label class="col-sm-2 control-label">Shares</label>
+                    <div class="col-sm-2"><input type="text" class="form-control" ng-model="dte.shares" /></div>
+                </div>
+            </span>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary pull-left" ng-click="addDatePeriod()">Add Date Period</button>
+        <button class="btn btn-success" ng-click="save()">Save</button>
+        <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

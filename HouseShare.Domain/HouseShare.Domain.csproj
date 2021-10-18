@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1727CFA1-1841-467C-858A-4F32F0FBB0E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HouseShare.Domain</RootNamespace>
+    <AssemblyName>HouseShare.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="House.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HSModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HSModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HSModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HSModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HSModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="MoneyTransaction.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Owe.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Payment.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Purchase.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PurchaseShare.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\Abstract\IHouse.cs" />
+    <Compile Include="Repositories\Abstract\IMoneyTransaction.cs" />
+    <Compile Include="Repositories\Abstract\IOwe.cs" />
+    <Compile Include="Repositories\Abstract\IPayment.cs" />
+    <Compile Include="Repositories\Abstract\IPurchase.cs" />
+    <Compile Include="Repositories\Abstract\IRepository.cs" />
+    <Compile Include="Repositories\Abstract\IShareEntity.cs" />
+    <Compile Include="Repositories\Abstract\IShareEntityDate.cs" />
+    <Compile Include="Repositories\Abstract\IUserProfile.cs" />
+    <Compile Include="Repositories\Concrete\DbHouse.cs" />
+    <Compile Include="Repositories\Concrete\DbMoneyTransaction.cs" />
+    <Compile Include="Repositories\Concrete\DbOwe.cs" />
+    <Compile Include="Repositories\Concrete\DbPayment.cs" />
+    <Compile Include="Repositories\Concrete\DbPurchase.cs" />
+    <Compile Include="Repositories\Concrete\DbRepository.cs" />
+    <Compile Include="Repositories\Concrete\DbShareEntity.cs" />
+    <Compile Include="Repositories\Concrete\DbShareEntityDate.cs" />
+    <Compile Include="Repositories\Concrete\DbUserProfile.cs" />
+    <Compile Include="ShareEntity.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShareEntityDate.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserProfile.cs">
+      <DependentUpon>HSModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="HSModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>HSModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="HSModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HSModel.edmx</DependentUpon>
+      <LastGenOutput>HSModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="HSModel.edmx.diagram">
+      <DependentUpon>HSModel.edmx</DependentUpon>
+    </None>
+    <None Include="HSModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>HSModel.edmx</DependentUpon>
+      <LastGenOutput>HSModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,1007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MainModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MoneyTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseId" Type="int" />
+          <Property Name="OweId" Type="int" />
+          <Property Name="TxDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="PaymentId" Type="int" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+          <Property Name="FromShareEntityId" Type="int" Nullable="false" />
+          <Property Name="ToShareEntityId" Type="int" Nullable="false" />
+          <Property Name="PaymentOweId" Type="int" />
+        </EntityType>
+        <EntityType Name="Owe">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromShareEntityId" Type="int" Nullable="false" />
+          <Property Name="ToShareEntityId" Type="int" Nullable="false" />
+          <Property Name="OweDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromShareEntityId" Type="int" Nullable="false" />
+          <Property Name="ToShareEntityId" Type="int" Nullable="false" />
+          <Property Name="PaymentDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShareEntityId" Type="int" Nullable="false" />
+          <Property Name="PurchaseDate" Type="date" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
+          <Property Name="Split" Type="bit" Nullable="false" />
+          <Property Name="FromDate" Type="date" />
+          <Property Name="ToDate" Type="date" />
+          <Property Name="Note" Type="varchar(max)" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PurchaseShare">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PurchaseId" Type="int" Nullable="false" />
+          <Property Name="ShareEntityId" Type="int" Nullable="false" />
+          <Property Name="Shares" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShareEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShareEntityDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ShareEntityId" Type="int" Nullable="false" />
+          <Property Name="FromDate" Type="date" Nullable="false" />
+          <Property Name="ToDate" Type="date" />
+          <Property Name="Shares" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="56" Nullable="false" />
+          <Property Name="HouseId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__MoneyTran__FromS__1EA48E88">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="FromShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__House__276EDEB3">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__OweId__1FCDBCEB">
+          <End Role="Owe" Type="Self.Owe" Multiplicity="0..1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Owe">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="OweId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__Payme__20C1E124">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="0..1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="PaymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__Payme__2EDAF651">
+          <End Role="Owe" Type="Self.Owe" Multiplicity="0..1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Owe">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="PaymentOweId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__Purch__1ED998B2">
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="0..1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="PurchaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__MoneyTran__ToSha__1F98B2C1">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="MoneyTransaction" Type="Self.MoneyTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MoneyTransaction">
+              <PropertyRef Name="ToShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Owe__FromShareEn__1B0907CE">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="Owe" Type="Self.Owe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Owe">
+              <PropertyRef Name="FromShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Owe__HouseId__267ABA7A">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="Owe" Type="Self.Owe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Owe">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Owe__ToShareEnti__1BFD2C07">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="Owe" Type="Self.Owe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Owe">
+              <PropertyRef Name="ToShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payment__FromSha__173876EA">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="FromShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payment__HouseId__25869641">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payment__ToShare__182C9B23">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="ToShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchase__HouseI__24927208">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Purchase">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Purchase__ShareE__145C0A3F">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Purchase">
+              <PropertyRef Name="ShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PurchaseS__Purch__3E1D39E1">
+          <End Role="Purchase" Type="Self.Purchase" Multiplicity="1" />
+          <End Role="PurchaseShare" Type="Self.PurchaseShare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Purchase">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseShare">
+              <PropertyRef Name="PurchaseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PurchaseS__Share__3F115E1A">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="PurchaseShare" Type="Self.PurchaseShare" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PurchaseShare">
+              <PropertyRef Name="ShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ShareEnti__House__239E4DCF">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShareEntity">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ShareEnti__Share__2DE6D218">
+          <End Role="ShareEntity" Type="Self.ShareEntity" Multiplicity="1" />
+          <End Role="ShareEntityDate" Type="Self.ShareEntityDate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShareEntity">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShareEntityDate">
+              <PropertyRef Name="ShareEntityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__UserProfi__House__1DB06A4F">
+          <End Role="House" Type="Self.House" Multiplicity="1" />
+          <End Role="UserProfile" Type="Self.UserProfile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="House">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserProfile">
+              <PropertyRef Name="HouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MainModelStoreContainer">
+          <EntitySet Name="House" EntityType="Self.House" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MoneyTransaction" EntityType="Self.MoneyTransaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Owe" EntityType="Self.Owe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Purchase" EntityType="Self.Purchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PurchaseShare" EntityType="Self.PurchaseShare" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShareEntity" EntityType="Self.ShareEntity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShareEntityDate" EntityType="Self.ShareEntityDate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserProfile" EntityType="Self.UserProfile" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__MoneyTran__FromS__1EA48E88" Association="Self.FK__MoneyTran__FromS__1EA48E88">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__House__276EDEB3" Association="Self.FK__MoneyTran__House__276EDEB3">
+            <End Role="House" EntitySet="House" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__OweId__1FCDBCEB" Association="Self.FK__MoneyTran__OweId__1FCDBCEB">
+            <End Role="Owe" EntitySet="Owe" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Payme__20C1E124" Association="Self.FK__MoneyTran__Payme__20C1E124">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Payme__2EDAF651" Association="Self.FK__MoneyTran__Payme__2EDAF651">
+            <End Role="Owe" EntitySet="Owe" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Purch__1ED998B2" Association="Self.FK__MoneyTran__Purch__1ED998B2">
+            <End Role="Purchase" EntitySet="Purchase" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__ToSha__1F98B2C1" Association="Self.FK__MoneyTran__ToSha__1F98B2C1">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__FromShareEn__1B0907CE" Association="Self.FK__Owe__FromShareEn__1B0907CE">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="Owe" EntitySet="Owe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__HouseId__267ABA7A" Association="Self.FK__Owe__HouseId__267ABA7A">
+            <End Role="House" EntitySet="House" />
+            <End Role="Owe" EntitySet="Owe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__ToShareEnti__1BFD2C07" Association="Self.FK__Owe__ToShareEnti__1BFD2C07">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="Owe" EntitySet="Owe" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__FromSha__173876EA" Association="Self.FK__Payment__FromSha__173876EA">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__HouseId__25869641" Association="Self.FK__Payment__HouseId__25869641">
+            <End Role="House" EntitySet="House" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__ToShare__182C9B23" Association="Self.FK__Payment__ToShare__182C9B23">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchase__HouseI__24927208" Association="Self.FK__Purchase__HouseI__24927208">
+            <End Role="House" EntitySet="House" />
+            <End Role="Purchase" EntitySet="Purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchase__ShareE__145C0A3F" Association="Self.FK__Purchase__ShareE__145C0A3F">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="Purchase" EntitySet="Purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PurchaseS__Purch__3E1D39E1" Association="Self.FK__PurchaseS__Purch__3E1D39E1">
+            <End Role="Purchase" EntitySet="Purchase" />
+            <End Role="PurchaseShare" EntitySet="PurchaseShare" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PurchaseS__Share__3F115E1A" Association="Self.FK__PurchaseS__Share__3F115E1A">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="PurchaseShare" EntitySet="PurchaseShare" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShareEnti__House__239E4DCF" Association="Self.FK__ShareEnti__House__239E4DCF">
+            <End Role="House" EntitySet="House" />
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShareEnti__Share__2DE6D218" Association="Self.FK__ShareEnti__Share__2DE6D218">
+            <End Role="ShareEntity" EntitySet="ShareEntity" />
+            <End Role="ShareEntityDate" EntitySet="ShareEntityDate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__UserProfi__House__1DB06A4F" Association="Self.FK__UserProfi__House__1DB06A4F">
+            <End Role="House" EntitySet="House" />
+            <End Role="UserProfile" EntitySet="UserProfile" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MainModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="HouseShareEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Houses" EntityType="MainModel.House" />
+          <EntitySet Name="MoneyTransactions" EntityType="MainModel.MoneyTransaction" />
+          <EntitySet Name="Owes" EntityType="MainModel.Owe" />
+          <EntitySet Name="Payments" EntityType="MainModel.Payment" />
+          <EntitySet Name="Purchases" EntityType="MainModel.Purchase" />
+          <EntitySet Name="ShareEntities" EntityType="MainModel.ShareEntity" />
+          <AssociationSet Name="FK__MoneyTran__House__276EDEB3" Association="MainModel.FK__MoneyTran__House__276EDEB3">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__HouseId__267ABA7A" Association="MainModel.FK__Owe__HouseId__267ABA7A">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="Owe" EntitySet="Owes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__HouseId__25869641" Association="MainModel.FK__Payment__HouseId__25869641">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchase__HouseI__24927208" Association="MainModel.FK__Purchase__HouseI__24927208">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="Purchase" EntitySet="Purchases" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ShareEnti__House__239E4DCF" Association="MainModel.FK__ShareEnti__House__239E4DCF">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__OweId__1FCDBCEB" Association="MainModel.FK__MoneyTran__OweId__1FCDBCEB">
+            <End Role="Owe" EntitySet="Owes" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Payme__20C1E124" Association="MainModel.FK__MoneyTran__Payme__20C1E124">
+            <End Role="Payment" EntitySet="Payments" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Purch__1ED998B2" Association="MainModel.FK__MoneyTran__Purch__1ED998B2">
+            <End Role="Purchase" EntitySet="Purchases" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__FromShareEn__1B0907CE" Association="MainModel.FK__Owe__FromShareEn__1B0907CE">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="Owe" EntitySet="Owes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Owe__ToShareEnti__1BFD2C07" Association="MainModel.FK__Owe__ToShareEnti__1BFD2C07">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="Owe" EntitySet="Owes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__FromSha__173876EA" Association="MainModel.FK__Payment__FromSha__173876EA">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__ToShare__182C9B23" Association="MainModel.FK__Payment__ToShare__182C9B23">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Purchase__ShareE__145C0A3F" Association="MainModel.FK__Purchase__ShareE__145C0A3F">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="Purchase" EntitySet="Purchases" />
+          </AssociationSet>
+          <EntitySet Name="UserProfiles" EntityType="MainModel.UserProfile" />
+          <AssociationSet Name="FK__UserProfi__House__1DB06A4F" Association="MainModel.FK__UserProfi__House__1DB06A4F">
+            <End Role="House" EntitySet="Houses" />
+            <End Role="UserProfile" EntitySet="UserProfiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__FromS__1EA48E88" Association="MainModel.FK__MoneyTran__FromS__1EA48E88">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__ToSha__1F98B2C1" Association="MainModel.FK__MoneyTran__ToSha__1F98B2C1">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <EntitySet Name="ShareEntityDates" EntityType="MainModel.ShareEntityDate" />
+          <AssociationSet Name="FK__ShareEnti__Share__2DE6D218" Association="MainModel.FK__ShareEnti__Share__2DE6D218">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="ShareEntityDate" EntitySet="ShareEntityDates" />
+          </AssociationSet>
+          <AssociationSet Name="FK__MoneyTran__Payme__2EDAF651" Association="MainModel.FK__MoneyTran__Payme__2EDAF651">
+            <End Role="Owe" EntitySet="Owes" />
+            <End Role="MoneyTransaction" EntitySet="MoneyTransactions" />
+          </AssociationSet>
+          <EntitySet Name="PurchaseShares" EntityType="MainModel.PurchaseShare" />
+          <AssociationSet Name="FK__PurchaseS__Purch__3E1D39E1" Association="MainModel.FK__PurchaseS__Purch__3E1D39E1">
+            <End Role="Purchase" EntitySet="Purchases" />
+            <End Role="PurchaseShare" EntitySet="PurchaseShares" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PurchaseS__Share__3F115E1A" Association="MainModel.FK__PurchaseS__Share__3F115E1A">
+            <End Role="ShareEntity" EntitySet="ShareEntities" />
+            <End Role="PurchaseShare" EntitySet="PurchaseShares" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="House">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MoneyTransactions" Relationship="MainModel.FK__MoneyTran__House__276EDEB3" FromRole="House" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="Owes" Relationship="MainModel.FK__Owe__HouseId__267ABA7A" FromRole="House" ToRole="Owe" />
+          <NavigationProperty Name="Payments" Relationship="MainModel.FK__Payment__HouseId__25869641" FromRole="House" ToRole="Payment" />
+          <NavigationProperty Name="Purchases" Relationship="MainModel.FK__Purchase__HouseI__24927208" FromRole="House" ToRole="Purchase" />
+          <NavigationProperty Name="ShareEntities" Relationship="MainModel.FK__ShareEnti__House__239E4DCF" FromRole="House" ToRole="ShareEntity" />
+          <NavigationProperty Name="UserProfiles" Relationship="MainModel.FK__UserProfi__House__1DB06A4F" FromRole="House" ToRole="UserProfile" />
+        </EntityType>
+        <EntityType Name="MoneyTransaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TxDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__MoneyTran__House__276EDEB3" FromRole="MoneyTransaction" ToRole="House" />
+          <NavigationProperty Name="Owe" Relationship="MainModel.FK__MoneyTran__OweId__1FCDBCEB" FromRole="MoneyTransaction" ToRole="Owe" />
+          <NavigationProperty Name="Payment" Relationship="MainModel.FK__MoneyTran__Payme__20C1E124" FromRole="MoneyTransaction" ToRole="Payment" />
+          <NavigationProperty Name="Purchase" Relationship="MainModel.FK__MoneyTran__Purch__1ED998B2" FromRole="MoneyTransaction" ToRole="Purchase" />
+          <NavigationProperty Name="FromEntity" Relationship="MainModel.FK__MoneyTran__FromS__1EA48E88" FromRole="MoneyTransaction" ToRole="ShareEntity" />
+          <NavigationProperty Name="ToEntity" Relationship="MainModel.FK__MoneyTran__ToSha__1F98B2C1" FromRole="MoneyTransaction" ToRole="ShareEntity" />
+          <NavigationProperty Name="PaymentOwe" Relationship="MainModel.FK__MoneyTran__Payme__2EDAF651" FromRole="MoneyTransaction" ToRole="Owe" />
+        </EntityType>
+        <EntityType Name="Owe">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OweDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__Owe__HouseId__267ABA7A" FromRole="Owe" ToRole="House" />
+          <NavigationProperty Name="MoneyTransactions" Relationship="MainModel.FK__MoneyTran__OweId__1FCDBCEB" FromRole="Owe" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="FromEntity" Relationship="MainModel.FK__Owe__FromShareEn__1B0907CE" FromRole="Owe" ToRole="ShareEntity" />
+          <NavigationProperty Name="ToEntity" Relationship="MainModel.FK__Owe__ToShareEnti__1BFD2C07" FromRole="Owe" ToRole="ShareEntity" />
+          <NavigationProperty Name="MoneyTransactions1" Relationship="MainModel.FK__MoneyTran__Payme__2EDAF651" FromRole="Owe" ToRole="MoneyTransaction" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__Payment__HouseId__25869641" FromRole="Payment" ToRole="House" />
+          <NavigationProperty Name="MoneyTransactions" Relationship="MainModel.FK__MoneyTran__Payme__20C1E124" FromRole="Payment" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="FromEntity" Relationship="MainModel.FK__Payment__FromSha__173876EA" FromRole="Payment" ToRole="ShareEntity" />
+          <NavigationProperty Name="ToEntity" Relationship="MainModel.FK__Payment__ToShare__182C9B23" FromRole="Payment" ToRole="ShareEntity" />
+        </EntityType>
+        <EntityType Name="Purchase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PurchaseDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Split" Type="Boolean" Nullable="false" />
+          <Property Name="FromDate" Type="DateTime" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Precision="0" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__Purchase__HouseI__24927208" FromRole="Purchase" ToRole="House" />
+          <NavigationProperty Name="MoneyTransactions" Relationship="MainModel.FK__MoneyTran__Purch__1ED998B2" FromRole="Purchase" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="ShareEntity" Relationship="MainModel.FK__Purchase__ShareE__145C0A3F" FromRole="Purchase" ToRole="ShareEntity" />
+          <Property Name="Category" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PurchaseShares" Relationship="MainModel.FK__PurchaseS__Purch__3E1D39E1" FromRole="Purchase" ToRole="PurchaseShare" />
+        </EntityType>
+        <EntityType Name="ShareEntity">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__ShareEnti__House__239E4DCF" FromRole="ShareEntity" ToRole="House" />
+          <NavigationProperty Name="Owes" Relationship="MainModel.FK__Owe__FromShareEn__1B0907CE" FromRole="ShareEntity" ToRole="Owe" />
+          <NavigationProperty Name="Owes1" Relationship="MainModel.FK__Owe__ToShareEnti__1BFD2C07" FromRole="ShareEntity" ToRole="Owe" />
+          <NavigationProperty Name="Payments" Relationship="MainModel.FK__Payment__FromSha__173876EA" FromRole="ShareEntity" ToRole="Payment" />
+          <NavigationProperty Name="Payments1" Relationship="MainModel.FK__Payment__ToShare__182C9B23" FromRole="ShareEntity" ToRole="Payment" />
+          <NavigationProperty Name="Purchases" Relationship="MainModel.FK__Purchase__ShareE__145C0A3F" FromRole="ShareEntity" ToRole="Purchase" />
+          <NavigationProperty Name="MoneyTransactions" Relationship="MainModel.FK__MoneyTran__FromS__1EA48E88" FromRole="ShareEntity" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="MoneyTransactions1" Relationship="MainModel.FK__MoneyTran__ToSha__1F98B2C1" FromRole="ShareEntity" ToRole="MoneyTransaction" />
+          <NavigationProperty Name="ShareEntityDates" Relationship="MainModel.FK__ShareEnti__Share__2DE6D218" FromRole="ShareEntity" ToRole="ShareEntityDate" />
+          <NavigationProperty Name="PurchaseShares" Relationship="MainModel.FK__PurchaseS__Share__3F115E1A" FromRole="ShareEntity" ToRole="PurchaseShare" />
+        </EntityType>
+        <Association Name="FK__MoneyTran__House__276EDEB3">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Owe__HouseId__267ABA7A">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.Owe" Role="Owe" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Payment__HouseId__25869641">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.Payment" Role="Payment" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Purchase__HouseI__24927208">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.Purchase" Role="Purchase" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__ShareEnti__House__239E4DCF">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__OweId__1FCDBCEB">
+          <End Type="MainModel.Owe" Role="Owe" Multiplicity="0..1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__Payme__20C1E124">
+          <End Type="MainModel.Payment" Role="Payment" Multiplicity="0..1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__Purch__1ED998B2">
+          <End Type="MainModel.Purchase" Role="Purchase" Multiplicity="0..1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Owe__FromShareEn__1B0907CE">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.Owe" Role="Owe" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Owe__ToShareEnti__1BFD2C07">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.Owe" Role="Owe" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Payment__FromSha__173876EA">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.Payment" Role="Payment" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Payment__ToShare__182C9B23">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.Payment" Role="Payment" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__Purchase__ShareE__145C0A3F">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.Purchase" Role="Purchase" Multiplicity="*" />
+        </Association>
+        <EntityType Name="UserProfile">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="House" Relationship="MainModel.FK__UserProfi__House__1DB06A4F" FromRole="UserProfile" ToRole="House" />
+        </EntityType>
+        <Association Name="FK__UserProfi__House__1DB06A4F">
+          <End Type="MainModel.House" Role="House" Multiplicity="1" />
+          <End Type="MainModel.UserProfile" Role="UserProfile" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__FromS__1EA48E88">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__ToSha__1F98B2C1">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <EntityType Name="ShareEntityDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Precision="0" />
+          <Property Name="Shares" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <NavigationProperty Name="ShareEntity" Relationship="MainModel.FK__ShareEnti__Share__2DE6D218" FromRole="ShareEntityDate" ToRole="ShareEntity" />
+        </EntityType>
+        <Association Name="FK__ShareEnti__Share__2DE6D218">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.ShareEntityDate" Role="ShareEntityDate" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__MoneyTran__Payme__2EDAF651">
+          <End Type="MainModel.Owe" Role="Owe" Multiplicity="0..1" />
+          <End Type="MainModel.MoneyTransaction" Role="MoneyTransaction" Multiplicity="*" />
+        </Association>
+        <EntityType Name="PurchaseShare">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Shares" Type="Decimal" Nullable="false" Precision="5" Scale="2" />
+          <NavigationProperty Name="Purchase" Relationship="MainModel.FK__PurchaseS__Purch__3E1D39E1" FromRole="PurchaseShare" ToRole="Purchase" />
+          <NavigationProperty Name="ShareEntity" Relationship="MainModel.FK__PurchaseS__Share__3F115E1A" FromRole="PurchaseShare" ToRole="ShareEntity" />
+        </EntityType>
+        <Association Name="FK__PurchaseS__Purch__3E1D39E1">
+          <End Type="MainModel.Purchase" Role="Purchase" Multiplicity="1" />
+          <End Type="MainModel.PurchaseShare" Role="PurchaseShare" Multiplicity="*" />
+        </Association>
+        <Association Name="FK__PurchaseS__Share__3F115E1A">
+          <End Type="MainModel.ShareEntity" Role="ShareEntity" Multiplicity="1" />
+          <End Type="MainModel.PurchaseShare" Role="PurchaseShare" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MainModelStoreContainer" CdmEntityContainer="HouseShareEntities">
+          <EntitySetMapping Name="Houses">
+            <EntityTypeMapping TypeName="MainModel.House">
+              <MappingFragment StoreEntitySet="House">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MoneyTransactions">
+            <EntityTypeMapping TypeName="MainModel.MoneyTransaction">
+              <MappingFragment StoreEntitySet="MoneyTransaction">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="TxDate" ColumnName="TxDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Owes">
+            <EntityTypeMapping TypeName="MainModel.Owe">
+              <MappingFragment StoreEntitySet="Owe">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="OweDate" ColumnName="OweDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="MainModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Purchases">
+            <EntityTypeMapping TypeName="MainModel.Purchase">
+              <MappingFragment StoreEntitySet="Purchase">
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Split" ColumnName="Split" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PurchaseDate" ColumnName="PurchaseDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShareEntities">
+            <EntityTypeMapping TypeName="MainModel.ShareEntity">
+              <MappingFragment StoreEntitySet="ShareEntity">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__House__276EDEB3" TypeName="MainModel.FK__MoneyTran__House__276EDEB3" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Owe__HouseId__267ABA7A" TypeName="MainModel.FK__Owe__HouseId__267ABA7A" StoreEntitySet="Owe">
+            <EndProperty Name="Owe">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Payment__HouseId__25869641" TypeName="MainModel.FK__Payment__HouseId__25869641" StoreEntitySet="Payment">
+            <EndProperty Name="Payment">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Purchase__HouseI__24927208" TypeName="MainModel.FK__Purchase__HouseI__24927208" StoreEntitySet="Purchase">
+            <EndProperty Name="Purchase">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__ShareEnti__House__239E4DCF" TypeName="MainModel.FK__ShareEnti__House__239E4DCF" StoreEntitySet="ShareEntity">
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__OweId__1FCDBCEB" TypeName="MainModel.FK__MoneyTran__OweId__1FCDBCEB" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Owe">
+              <ScalarProperty Name="Id" ColumnName="OweId" />
+            </EndProperty>
+            <Condition ColumnName="OweId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__Payme__20C1E124" TypeName="MainModel.FK__MoneyTran__Payme__20C1E124" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Payment">
+              <ScalarProperty Name="Id" ColumnName="PaymentId" />
+            </EndProperty>
+            <Condition ColumnName="PaymentId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__Purch__1ED998B2" TypeName="MainModel.FK__MoneyTran__Purch__1ED998B2" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Purchase">
+              <ScalarProperty Name="Id" ColumnName="PurchaseId" />
+            </EndProperty>
+            <Condition ColumnName="PurchaseId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Owe__FromShareEn__1B0907CE" TypeName="MainModel.FK__Owe__FromShareEn__1B0907CE" StoreEntitySet="Owe">
+            <EndProperty Name="Owe">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="FromShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Owe__ToShareEnti__1BFD2C07" TypeName="MainModel.FK__Owe__ToShareEnti__1BFD2C07" StoreEntitySet="Owe">
+            <EndProperty Name="Owe">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ToShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Payment__FromSha__173876EA" TypeName="MainModel.FK__Payment__FromSha__173876EA" StoreEntitySet="Payment">
+            <EndProperty Name="Payment">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="FromShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Payment__ToShare__182C9B23" TypeName="MainModel.FK__Payment__ToShare__182C9B23" StoreEntitySet="Payment">
+            <EndProperty Name="Payment">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ToShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__Purchase__ShareE__145C0A3F" TypeName="MainModel.FK__Purchase__ShareE__145C0A3F" StoreEntitySet="Purchase">
+            <EndProperty Name="Purchase">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="UserProfiles">
+            <EntityTypeMapping TypeName="MainModel.UserProfile">
+              <MappingFragment StoreEntitySet="UserProfile">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__UserProfi__House__1DB06A4F" TypeName="MainModel.FK__UserProfi__House__1DB06A4F" StoreEntitySet="UserProfile">
+            <EndProperty Name="UserProfile">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="House">
+              <ScalarProperty Name="Id" ColumnName="HouseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__FromS__1EA48E88" TypeName="MainModel.FK__MoneyTran__FromS__1EA48E88" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="FromShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__ToSha__1F98B2C1" TypeName="MainModel.FK__MoneyTran__ToSha__1F98B2C1" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ToShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="ShareEntityDates">
+            <EntityTypeMapping TypeName="MainModel.ShareEntityDate">
+              <MappingFragment StoreEntitySet="ShareEntityDate">
+                <ScalarProperty Name="Shares" ColumnName="Shares" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__ShareEnti__Share__2DE6D218" TypeName="MainModel.FK__ShareEnti__Share__2DE6D218" StoreEntitySet="ShareEntityDate">
+            <EndProperty Name="ShareEntityDate">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__MoneyTran__Payme__2EDAF651" TypeName="MainModel.FK__MoneyTran__Payme__2EDAF651" StoreEntitySet="MoneyTransaction">
+            <EndProperty Name="MoneyTransaction">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Owe">
+              <ScalarProperty Name="Id" ColumnName="PaymentOweId" />
+            </EndProperty>
+            <Condition ColumnName="PaymentOweId" IsNull="false" />
+          </AssociationSetMapping>
+          <EntitySetMapping Name="PurchaseShares">
+            <EntityTypeMapping TypeName="MainModel.PurchaseShare">
+              <MappingFragment StoreEntitySet="PurchaseShare">
+                <ScalarProperty Name="Shares" ColumnName="Shares" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK__PurchaseS__Purch__3E1D39E1" TypeName="MainModel.FK__PurchaseS__Purch__3E1D39E1" StoreEntitySet="PurchaseShare">
+            <EndProperty Name="PurchaseShare">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="Purchase">
+              <ScalarProperty Name="Id" ColumnName="PurchaseId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK__PurchaseS__Share__3F115E1A" TypeName="MainModel.FK__PurchaseS__Share__3F115E1A" StoreEntitySet="PurchaseShare">
+            <EndProperty Name="PurchaseShare">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="ShareEntity">
+              <ScalarProperty Name="Id" ColumnName="ShareEntityId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
