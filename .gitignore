@@ -16,6 +16,9 @@
 #appsettings
 appsettings.json
 
+#any secret config files that should not be stored in the repository
+secret_*.config
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
